@@ -1,0 +1,64 @@
+﻿@page "/admin/editadmin"
+@inject IIdentityDataAccess userData
+@inject UserManager<IdentityUser> userManager
+@inject RoleManager<IdentityRole> roleManager
+
+@attribute [Authorize(Roles = "Administrator")]
+
+<h3>Add a person to admin list</h3>
+
+@if (!String.IsNullOrEmpty(message))
+{
+    <span class="@cssValue">@message</span>
+}
+
+<EditForm Model="user" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator/>
+    <InputSelect @bind-Value="user.Email">
+        <option>Please select a user...</option>
+        @foreach (var u in users)
+        {
+            <option>@u.Email</option>
+        }
+    </InputSelect>
+    <button class="btn btn-dark" type="submit">Make Admin</button>
+</EditForm>
+
+
+@code {
+    string message = "";
+    string cssValue = "";
+
+    List<IdentityUser> users = new List<IdentityUser>();
+    IdentityUser user = new IdentityUser();
+    protected override async Task OnParametersSetAsync()
+    {
+        var userListGeneric = await userData.FetchUser<IdentityUser>();
+
+        users = userListGeneric.ToList<IdentityUser>();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if(user.Email is null)
+        {
+            message = "Please select a valid user!";
+            cssValue = "text-danger";
+            return;
+        }
+
+        var isAdmin = await userManager.IsInRoleAsync(user, "Administrator");
+
+        if (!isAdmin)
+        {
+            await userManager.AddToRoleAsync(user, "Administrator");
+            message = $"{user.Email} is now an Admin. Please request them to re-login for the permissions to take effect";
+            cssValue = "text-success";
+        }
+        else
+        {
+            message = $"{user.Email} is already an Admin";
+            cssValue = "text-danger";
+        }
+    }
+}

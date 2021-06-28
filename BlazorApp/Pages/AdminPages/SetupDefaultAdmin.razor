@@ -1,0 +1,44 @@
+﻿@page "/admin/setup"
+
+@inject RoleManager<IdentityRole> roleManager
+@inject UserManager<IdentityUser> userManager
+@inject IConfiguration config
+<h3>You've reached a secret page to setup the default admin</h3>
+
+@code {
+    const string Admin = "Administrator";
+    const string User = "User";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await SetupTask();
+        await SetupRole();
+    }
+
+    private async Task SetupTask()
+    {
+        string[] roles = { Admin, User };
+
+        foreach (var role in roles)
+        {
+            var roleExists = await roleManager.RoleExistsAsync(role);
+
+            if (!roleExists)
+            {
+                await roleManager.CreateAsync(new IdentityRole(role));
+            }
+        }
+    }
+
+    private async Task SetupRole()
+    {
+        string defaultAdmin = config.GetValue<string>("DefaultAdmin");
+
+        var userToSetup = await userManager.FindByEmailAsync(defaultAdmin);
+
+        if (userToSetup != null)
+        {
+            await userManager.AddToRoleAsync(userToSetup, Admin);
+        }
+    }
+}
