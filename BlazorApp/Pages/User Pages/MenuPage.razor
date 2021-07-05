@@ -1,0 +1,191 @@
+﻿@page "/menu"
+@inject IItemSQLData itemData
+@inject NavigationManager navigationManager
+
+
+
+@if (items.Count > 0)
+{
+    @if (showOrderSummary == false)
+    {
+        <h3 class="text-black-50">Menu</h3>
+
+        <div class="row">
+            <div class="col-md-6">
+                <p class="text-info align-self-center">Food Menu</p>
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Item Name</th>
+                            <th>Cost ($)</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in items)
+                        {
+                            if (item.ItemType == EntryType.Food.ToString())
+                            {
+                                <tr @onclick="(()=>HandleOnClick(item.Id))">
+                                    <td>@item.ItemName</td>
+                                    <td>@item.Cost</td>
+                                    <td>
+                                        <button class="btn oi oi-plus" @onclick="(()=>AddCart(item))"></button>
+                                        <button class="btn oi oi-minus" @onclick="(()=>RemoveFromCart(item))"></button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+
+                <p class="text-info align-self-center">Drink Menu</p>
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Item Name</th>
+                            <th>Cost ($)</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in items)
+                        {
+                            if (item.ItemType == EntryType.Drink.ToString())
+                            {
+                                <tr @onclick="(()=>HandleOnClick(item.Id))">
+                                    <td>@item.ItemName</td>
+                                    <td>@item.Cost</td>
+                                    <td>
+                                        <button class="btn oi oi-plus" @onclick="(()=>AddCart(item))"></button>
+                                        <button class="btn oi oi-minus" @onclick="(()=>RemoveFromCart(item))"></button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (cart.Count > 0)
+            {
+                <div class="col-md-4">
+                    <p class="text-info">Cart</p>
+                    <table class="table table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Item Name</th>
+                                <th>Cost per item</th>
+                                <th>Quantity</th>
+                                <th>Total cost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in cart)
+                            {
+                                <tr>
+                                    <td>@item.ItemName</td>
+                                    <td>@item.Cost</td>
+                                    <td>@item.Quantity</td>
+                                    <td>@item.Total</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <button class="btn btn-dark mx-2 my-1 float-right" type="submit" @onclick="OnOrderConfirmClick">Confirm Order</button>
+                    <button class="btn btn-dark mx-2 my-1 float-left" type="submit" @onclick="OnOrderClearClick">Clear Order</button>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="col-md-6">
+            <OrderDetailsPage cartItems="cart.ToList<ICartModel>()" OrderPlaced="HandleOrderPlaced"></OrderDetailsPage>
+            <button class="btn btn-primary my-2" @onclick="(()=>showOrderSummary=false)">Back to Order Details</button>
+        </div>
+    }
+}
+else
+{
+    <p class="text-light progress-bar-animated">Rumaging around the kitchen...</p>
+}
+
+
+
+@code {
+    bool showOrderSummary = false;
+
+    List<DisplayCartModel> cart = new List<DisplayCartModel>();
+
+    string message = "";
+
+    List<IItemEntryModel> items = new List<IItemEntryModel>();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        items = await itemData.ReadAllItems();
+    }
+
+    private void HandleOnClick(int id)
+    {
+        message = id.ToString();
+    }
+
+    private void AddCart(IItemEntryModel item)
+    {
+        var entry = cart.Where(x => x.ItemName == item.ItemName).ToList().FirstOrDefault();
+
+        if (entry != null)
+        {
+            entry.Quantity++;
+        }
+        else
+        {
+            var p = new DisplayCartModel();
+
+            p.ItemName = item.ItemName;
+            p.Cost = item.Cost;
+            p.Quantity = 1;
+
+            cart.Add(p);
+        }
+
+    }
+
+    private void RemoveFromCart(IItemEntryModel item)
+    {
+        var entry = cart.Where(x => x.ItemName == item.ItemName).ToList().FirstOrDefault();
+
+        if (entry != null)
+        {
+            if (entry.Quantity > 1)
+            {
+                entry.Quantity--;
+            }
+            else
+            {
+                cart.Remove(entry);
+            }
+        }
+    }
+
+    private void OnOrderConfirmClick()
+    {
+        message = "Please confirm receipt";
+
+        showOrderSummary = true;
+    }
+    private void OnOrderClearClick()
+    {
+        message = "Order Cleared";
+
+        cart.Clear();
+    }
+
+    private void HandleOrderPlaced()
+    {
+        message = "Order confirmed!";
+    }
+
+}

@@ -156,6 +156,11 @@
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
     <Build Include="dbo\StoredProcedures\spFetchUsers.sql" />
+    <Build Include="dbo\StoredProcedures\spAddItem.sql" />
+    <Build Include="dbo\Tables\Items.sql" />
+    <Build Include="dbo\StoredProcedures\spReadItems.sql" />
+    <Build Include="dbo\StoredProcedures\spUpdateItem.sql" />
+    <Build Include="dbo\StoredProcedures\spReadItem.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AuthenticationDatabase_1.publish.xml" />

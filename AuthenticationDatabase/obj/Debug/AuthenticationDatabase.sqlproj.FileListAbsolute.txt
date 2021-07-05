@@ -1,6 +1,5 @@
 C:\Users\Dan.G\source\repos\RestaurantDemoApp\AuthenticationDatabase\bin\Debug\AuthenticationDatabase.dacpac
 C:\Users\Dan.G\source\repos\RestaurantDemoApp\AuthenticationDatabase\bin\Debug\AuthenticationDatabase.dll
 C:\Users\Dan.G\source\repos\RestaurantDemoApp\AuthenticationDatabase\bin\Debug\AuthenticationDatabase.pdb
-C:\Users\Dan.G\source\repos\RestaurantDemoApp\AuthenticationDatabase\obj\Debug\AuthenticationDatabase.sqlprojAssemblyReference.cache
 C:\Users\Dan.G\source\repos\RestaurantDemoApp\AuthenticationDatabase\obj\Debug\AuthenticationDatabase.dll
 C:\Users\Dan.G\source\repos\RestaurantDemoApp\AuthenticationDatabase\obj\Debug\AuthenticationDatabase.pdb

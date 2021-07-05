@@ -199,3 +199,13 @@ C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\
 C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\Razor\Pages\_ViewStart.cshtml.g.cs
 C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Login.cshtml.g.cs
 C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ValidationScriptsPartial.cshtml.g.cs
+C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\AdminPages\AddEntries.razor.g.cs
+C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\User Pages\MenuPage.razor.g.cs
+C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\User Pages\OrderDetailsPage.razor.g.cs
+C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\Razor\Pages\AdminPages\AddEntries.razor.g.cs
+C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\Razor\Pages\User Pages\MenuPage.razor.g.cs
+C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\Razor\Pages\User Pages\OrderDetailsPage.razor.g.cs
+C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\AdminPages\Inventory.razor.g.cs
+C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\Razor\Pages\AdminPages\Inventory.razor.g.cs
+C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\AdminPages\UpdateEntry.razor.g.cs
+C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\Razor\Pages\AdminPages\UpdateEntry.razor.g.cs

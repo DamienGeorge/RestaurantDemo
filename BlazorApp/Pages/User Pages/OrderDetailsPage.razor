@@ -1,0 +1,121 @@
+﻿@inject IItemSQLData itemData
+<p class="text-success">@message</p>
+
+<EditForm Model="order" OnValidSubmit="HandleOrderPlaced">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="row">
+        <div class="form-group col-md-5 ">
+            <label>Customer Name</label>
+            <InputText @bind-Value="order.CustomerName" class="form-control"></InputText>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="w-25">
+                <label>Order Date</label>
+            </div>
+            <div class="w-75">
+                <span class="text-info">@order.OrderDate</span>
+            </div>
+            <div class="w-100"></div>
+            <div class="w-25">
+                <label>Order Total</label>
+            </div>
+            <div class="w-75">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                    </div>
+                    <input readonly type="number" class="input-group-text" value="@order.ItemTotal" />
+                </div>
+            </div>
+            <div class="w-100"></div>
+            <div class="w-25">
+                <label>Order Tax</label>
+            </div>
+            <div class="w-75">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                    </div>
+                    <input readonly type="number" class="input-group-text" value="@(order.ItemTotal*0.15M)" />
+                </div>
+            </div>
+
+            <div class="w-100"></div>
+            @if (order.DiscountPercentage > 0)
+            {
+                <div class="w-25">
+                    <label>Discount</label>
+                </div>
+                <div class="w-75">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">$</span>
+                        </div>
+                        <input readonly type="number" class="input-group-text" value="@order.DiscountPercentage" />
+                    </div>
+                </div>
+                <div class="w-100"></div>
+            }
+
+            <div class="w-25">
+                <label>Total Payable</label>
+            </div>
+            <div class="w-75">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                    </div>
+                    <input readonly type="number" class="input-group-text" value="@order.TotalCost" />
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-outline-success float-right mx-2 my-2" type="submit">Place Order</button>
+    </div>
+</EditForm>
+
+
+
+
+
+@code{
+
+    string message = "";
+
+    [Parameter]
+    public EventCallback OrderPlaced { get; set; }
+
+    [Parameter]
+    public List<ICartModel> cartItems { get; set; }
+
+    IOrderModel order = new DisplayOrderModel();
+
+    protected override void OnParametersSet()
+    {
+        decimal total = 0M;
+        order.CartData = cartItems;
+
+        cartItems.ForEach(x =>
+        {
+            total += x.Total;
+        });
+
+        order.ItemTotal = total;
+
+        order.DiscountPercentage = 0.05M;
+
+        //order.TotalCost = total + (total * .15M);
+    }
+
+    private async Task HandleOrderPlaced()
+    {
+        await itemData.SaveOrder(order);
+
+        message = "Thank you! Your order has been placed! Please give us a few moments to get your food ready";
+
+        order = new DisplayOrderModel();
+    }
+
+}

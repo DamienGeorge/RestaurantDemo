@@ -1,7 +1,22 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
+<h2>Dan's Restaurant App!</h2>
 
-Welcome to your new app.
+<h5>Welcome to Dan's restaurant!</h5>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+
+<AuthorizeView>
+    <Authorized>
+        @if(@context.User.IsInRole("Administrator"))
+        {
+        <span class="text-center">Welcome back admin, @context.User.Identity.Name</span>
+        }
+        else
+        {
+            <span>I am a normal authenticated user</span>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <h5>Please login</h5>
+    </NotAuthorized>
+</AuthorizeView>

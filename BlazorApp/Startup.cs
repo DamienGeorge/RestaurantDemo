@@ -12,7 +12,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SupportLibrary.Data.AuthData;
+using SupportLibrary.Data.ItemData;
 using SupportLibrary.DataAccess;
+using SupportLibrary.Models.Admin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,8 +45,12 @@ namespace BlazorApp
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddSingleton<WeatherForecastService>();
+
             services.AddSingleton<ISQLDataAccess, SQLDataAccess>();
             services.AddScoped<IIdentityDataAccess, IdentitySQLDataAccess>();
+            services.AddScoped<IOrderModel,OrderModel>();
+            services.AddScoped<IItemEntryModel, ItemEntryModel>();
+            services.AddScoped<IItemSQLData, ItemSQLData>();
 
         }
 

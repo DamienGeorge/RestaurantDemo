@@ -77,27 +77,55 @@ using BlazorApp.Shared;
 #nullable disable
 #nullable restore
 #line 10 "C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\_Imports.razor"
-using Microsoft.AspNetCore.Identity;
+using BlazorApp.Models;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
 #line 11 "C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\_Imports.razor"
-using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Identity;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
 #line 12 "C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\_Imports.razor"
+using Microsoft.Extensions.Configuration;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 13 "C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\_Imports.razor"
 using SupportLibrary.Data.AuthData;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 6 "C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\Pages\AdminPages\AddAdmin.razor"
+#line 14 "C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\_Imports.razor"
+using SupportLibrary.Models.Admin;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 15 "C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\_Imports.razor"
+using SupportLibrary.Data.ItemData;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 16 "C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\_Imports.razor"
+using SupportLibrary.Models.General;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 2 "C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\Pages\AdminPages\AddAdmin.razor"
            [Authorize(Roles = "Administrator")]
 
 #line default
@@ -112,7 +140,7 @@ using SupportLibrary.Data.AuthData;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 28 "C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\Pages\AdminPages\AddAdmin.razor"
+#line 31 "C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\Pages\AdminPages\AddAdmin.razor"
        
     string message = "";
     string cssValue = "";
@@ -126,16 +154,15 @@ using SupportLibrary.Data.AuthData;
         users = userListGeneric.ToList<IdentityUser>();
     }
 
-    private async Task HandleValidSubmit()
+    private async Task HandleAddAdmin()
     {
-        if(user.Email is null)
+
+        if (PreliminaryCheck() == false)
         {
-            message = "Please select a valid user!";
-            cssValue = "text-danger";
             return;
         }
 
-        var isAdmin = await userManager.IsInRoleAsync(user, "Administrator");
+        bool isAdmin = await CheckUserRole();
 
         if (!isAdmin)
         {
@@ -148,6 +175,51 @@ using SupportLibrary.Data.AuthData;
             message = $"{user.Email} is already an Admin";
             cssValue = "text-danger";
         }
+
+        user = new IdentityUser();
+    }
+
+    private async Task HandleRevokeAdmin()
+    {
+        if (PreliminaryCheck() ==false)
+        {
+            return;
+        }
+
+        bool isAdmin = await CheckUserRole();
+
+        if (isAdmin)
+        {
+            await userManager.RemoveFromRoleAsync(user, "Administrator");
+            message = $"{user.Email} is no longer an Admin. Please request them to re-login for the permissions to take effect";
+            cssValue = "text-success";
+        }
+        else
+        {
+            message = $"{user.Email} is not an Admin";
+            cssValue = "text-danger";
+        }
+        user = new IdentityUser();
+    }
+
+    private bool PreliminaryCheck()
+    {
+        if (user.Email is null)
+        {
+            message = "Please select a valid user!";
+            cssValue = "text-danger";
+            return false;
+        }
+
+        return true;
+    }
+
+    private async Task<bool> CheckUserRole()
+    {
+        user = await userManager.FindByEmailAsync(user.Email);
+
+        return await userManager.IsInRoleAsync(user, "Administrator");
+
     }
 
 #line default

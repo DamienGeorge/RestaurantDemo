@@ -1,0 +1,84 @@
+﻿@inject IItemSQLData itemData
+
+@if(!String.IsNullOrEmpty(message))
+{
+    <span class="@cssText">@message</span>
+}
+<EditForm Model="item" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+    <div class="form-group">
+        <label>Id</label>
+        <span class="form-control">@item.Id</span>
+    </div>
+    <div class="form-group">
+        <label>Item Type</label>
+        <InputSelect  @bind-Value="item.ItemType" class="form-control">
+            @foreach(var etype in Enum.GetValues(typeof(EntryType)))
+            {
+                <option>@etype</option>
+            }
+        </InputSelect>
+    </div>
+    <div class="form-group">
+        <label>Item Name</label>
+        <InputText @bind-Value="item.ItemName" class="form-control"></InputText>
+    </div>
+    <div class="form-group">
+        <label>Cost</label>
+        <InputNumber @bind-Value="item.Cost" class="form-control"></InputNumber>
+    </div>
+    <div class="form-group">
+        <label>Quantity</label>
+        <InputNumber @bind-Value="item.Quantity" class="form-control"></InputNumber>
+    </div>
+    <button class="btn btn-dark" type="submit">Update</button>
+</EditForm>
+
+@code {
+
+    string cssText = "";
+    string message = "";
+
+    [Parameter]
+    public int Id { get; set; }
+
+    [Parameter]
+    public EventCallback<IItemEntryModel> OnUpdate { get; set; }
+
+    IItemEntryModel item = new DisplayItemEntry();
+
+    int id = 0;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        id = Id;
+
+        message = "Fetching Entry";
+        cssText = "text-info";
+
+        item  = await itemData.ReadItem(id);
+
+        ClearMessage();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        message = "Updating...";
+        cssText = "text-info";
+        await itemData.UpdateItem(item);
+
+        ClearMessage();
+
+        await OnUpdate.InvokeAsync(item);
+       
+        item = new DisplayItemEntry();
+
+    }
+
+    private void ClearMessage()
+    {
+        message = "";
+        cssText = "";
+    }
+}
