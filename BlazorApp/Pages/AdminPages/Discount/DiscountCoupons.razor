@@ -1,0 +1,178 @@
+﻿@page "/admin/discount"
+@attribute [Authorize(Roles = "Administrator")]
+@inject IItemSQLData itemData
+
+@using Microsoft.Extensions.Logging
+@inject ILogger<DiscountCoupons> log
+
+<h3 class="text-black-50">Discount Coupons</h3>
+
+
+
+<div class="row">
+    <div class="col-lg-8">
+        <button class="btn btn-success oi oi-plus float-right mx-2 my-1" @onclick="HandleOnAdd"></button>
+        <table class="table table-striped table-hover table-responsive">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Code</th>
+                    <th>Percentage</th>
+                    <th>Upper Limit</th>
+                    <th>Remaining</th>
+                    <th>Expiry Date</th>
+                    <th>Min. Purchase</th>
+                    <th>Valid</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in discountList)
+                {
+                    <tr>
+                        <td>@item.CouponCode</td>
+                        <td>@item.PercentageDiscount</td>
+                        <td>@item.UpperLimit</td>
+                        <td>@item.RemainingUses</td>
+                        <td>@item.ExpiryDate</td>
+                        <td>@item.MinimumPurchase</td>
+                        <td>@item.Valid</td>
+                        <td><button class="btn btn-dark oi oi-pencil" @onclick="(() => HandleOnUpdate(item.Id))"></button></td>
+                        <td>
+                            @if (item.Id == idToDelete)
+                            {
+                                <button class="btn btn-danger" @onclick="(()=>HandleOnDelete(item.Id))">Confirm</button>
+
+                            }
+                            else
+                            {
+                                <button class="btn btn-outline-danger oi oi-x" @onclick="(()=>OnDeleteClick(item.Id))"></button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-lg-4">
+        @if (showUpdatePage != false)
+        {
+            <BlazorApp.Pages.AdminPages.Discount.UpdateDiscountEntry Id="idToEdit" OnUpdate="HandleOnUpdated"></BlazorApp.Pages.AdminPages.Discount.UpdateDiscountEntry>
+        }
+        @if (showAddPage != false)
+        {
+            <BlazorApp.Pages.AdminPages.Discount.AddDiscountEntry CouponAdded="HandleOnAdded"></BlazorApp.Pages.AdminPages.Discount.AddDiscountEntry>
+        }
+    </div>
+</div>
+
+@code {
+    List<IDiscountCouponModel> discountList = new List<IDiscountCouponModel>();
+
+
+    int idToEdit = 0;
+    int idToDelete = 0;
+    bool showUpdatePage = false;
+    bool showAddPage = false;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        discountList = await itemData.ReadDiscountCoupons();
+        log.LogDebug("Retrieved {itemCount} from the database", discountList.Count);
+
+
+        discountList.ForEach(x =>
+        {
+            x.CouponValidRecalc();
+            itemData.UpdateDiscountcode(x);
+        });
+    }
+
+    private void HandleOnUpdate(int id)
+    {
+
+        if (idToEdit == id)
+        {
+            showUpdatePage ^= true;
+        }
+        else
+        {
+            ResetActiveTriggers();
+
+            idToEdit = id;
+            showUpdatePage = true;
+        }
+
+        log.LogDebug("Triggering Update Page - Show");
+    }
+
+    /// <summary>
+    /// Resets any active trigger when another is called
+    /// </summary>
+    private void ResetActiveTriggers()
+    {
+        idToDelete = 0;
+        idToEdit = 0;
+        showUpdatePage = false;
+        showAddPage = false;
+    }
+
+    private void HandleOnAdd()
+    {
+        ResetActiveTriggers();
+
+        showAddPage ^= true;
+
+        log.LogDebug("Triggering Add Page - Show");
+    }
+
+    private void HandleOnAdded(IDiscountCouponModel coupon)
+    {
+        discountList.Add(coupon);
+
+        showAddPage = false;
+
+        log.LogDebug("Added entry {couponCode} to the db", coupon.CouponCode);
+    }
+
+    private void OnDeleteClick(int Id)
+    {
+        ResetActiveTriggers();
+
+        idToDelete = Id;
+        log.LogDebug("Triggered Delete on {Id}", Id);
+    }
+
+    private async Task HandleOnDelete(int Id)
+    {
+        if (Id > 0)
+        {
+            await itemData.DeleteDiscountCoupon(Id);
+
+            var rowToRemove = discountList.Where(x => x.Id == Id).ToList().FirstOrDefault();
+            discountList.Remove(rowToRemove);
+            log.LogDebug("Delete entry {couponCode} {Id}", rowToRemove.CouponCode, Id);
+        }
+        else
+        {
+            log.LogWarning("Could not find entry {Id} , please reload page", Id);
+        }
+    }
+
+    private void HandleOnUpdated(IDiscountCouponModel coupon)
+    {
+
+        var row = discountList.Where(x => x.Id == coupon.Id).FirstOrDefault();
+
+        row.CouponCode = coupon.CouponCode;
+        row.ExpiryDate = coupon.ExpiryDate;
+        row.MinimumPurchase = coupon.MinimumPurchase;
+        row.PercentageDiscount = coupon.PercentageDiscount;
+        row.RemainingUses = coupon.RemainingUses;
+        row.UpperLimit = coupon.UpperLimit;
+        row.Valid = coupon.Valid;
+
+        showUpdatePage = false;
+    }
+
+}

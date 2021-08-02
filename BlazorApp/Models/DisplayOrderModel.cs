@@ -11,21 +11,28 @@ namespace BlazorApp.Models
     public class DisplayOrderModel : IOrderModel
     {
         public const decimal TaxRate = 0.15M;
-        public int OrderId { get; set; }
+        public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please Enter your Name")]
         public string CustomerName { get; set; }
         public DateTime OrderDate { get; set; } = DateTime.Now;
         public decimal ItemTotal { get; set; }
-        public decimal TaxTotal { get; }
+        public decimal TaxTotal
+        {
+            get
+            {
+                return ItemTotal * TaxRate;
+            }
+        }
         public decimal DiscountPercentage { get; set; } = 0;
         public decimal TotalCost
         {
             get
             {
-                return (ItemTotal + ItemTotal * TaxRate - ItemTotal * DiscountPercentage);
+                return (ItemTotal + (ItemTotal * TaxRate) - (ItemTotal * DiscountPercentage / 100));
             }
         }
         public List<ICartModel> CartData { get; set; }
+        public bool OrderCompleted { get; set; } = false;
     }
 }

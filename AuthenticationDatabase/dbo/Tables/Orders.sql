@@ -6,6 +6,7 @@
     [TaxTotal] DECIMAL(18, 2) NULL, 
     [Discount] DECIMAL(18, 2) NULL, 
     [TotalCost] DECIMAL(18, 2) NULL, 
-    [OrderDate] DATETIME2 NULL 
+    [OrderDate] DATETIME2 NULL, 
+    [OrderCompleted] BIT NULL 
 
 )

@@ -1,8 +1,10 @@
 ﻿@page "/menu"
 @inject IItemSQLData itemData
 @inject NavigationManager navigationManager
+@using Microsoft.Extensions.Logging
+@inject ILogger<MenuPage> log
 
-
+<div class="alert alert-danger">@message</div> 
 
 @if (items.Count > 0)
 {
@@ -24,7 +26,7 @@
                     <tbody>
                         @foreach (var item in items)
                         {
-                            if (item.ItemType == EntryType.Food.ToString())
+                            if (item.ItemType == EntryType.Food.ToString() && item.Quantity > 0)
                             {
                                 <tr @onclick="(()=>HandleOnClick(item.Id))">
                                     <td>@item.ItemName</td>
@@ -102,19 +104,30 @@
     {
         <div class="col-md-6">
             <OrderDetailsPage cartItems="cart.ToList<ICartModel>()" OrderPlaced="HandleOrderPlaced"></OrderDetailsPage>
-            <button class="btn btn-primary my-2" @onclick="(()=>showOrderSummary=false)">Back to Order Details</button>
+            @if (returnToMenuTrigger == false)
+            {
+                <button class="btn btn-primary my-2" @onclick="(()=>showOrderSummary=false)">Back to Order Details</button>
+            }
+            else
+            {
+                <button class="btn btn-primary my-2" @onclick="(()=> { showOrderSummary = false; cart = new List<DisplayCartModel>(); })">Back to Menu</button>
+            }
         </div>
     }
 }
 else
 {
-    <p class="text-light progress-bar-animated">Rumaging around the kitchen...</p>
+    <div class="d-flex align-items-center">
+        <trong>Rumaging around the kitchen...</trong>
+        <div class="spinner-border mx-3" role="status"></div>
+    </div>
 }
 
 
 
 @code {
     bool showOrderSummary = false;
+    bool returnToMenuTrigger = false;
 
     List<DisplayCartModel> cart = new List<DisplayCartModel>();
 
@@ -124,12 +137,14 @@ else
 
     protected override async Task OnParametersSetAsync()
     {
+        log.LogDebug("Fetching all items from database");
         items = await itemData.ReadAllItems();
+        log.LogDebug("Found {itemCount} in inventory", items.Count);
     }
 
     private void HandleOnClick(int id)
     {
-        message = id.ToString();
+        //message = id.ToString();
     }
 
     private void AddCart(IItemEntryModel item)
@@ -138,7 +153,15 @@ else
 
         if (entry != null)
         {
-            entry.Quantity++;
+            if (entry.Quantity == item.Quantity)
+            {
+
+                message = $"Sorry, but this item is no longer available";
+            }
+            else
+            {
+                entry.Quantity++;
+            }
         }
         else
         {
@@ -175,6 +198,7 @@ else
         message = "Please confirm receipt";
 
         showOrderSummary = true;
+        returnToMenuTrigger = false;
     }
     private void OnOrderClearClick()
     {
@@ -183,9 +207,32 @@ else
         cart.Clear();
     }
 
-    private void HandleOrderPlaced()
+    private async void HandleOrderPlaced()
     {
         message = "Order confirmed!";
+        returnToMenuTrigger = true;
+
+        List<IItemEntryModel> items = await itemData.ReadAllItems();
+        var itemsToUpdate = from inventory in items
+                            join purchaseitems in cart
+                            on inventory.ItemName equals purchaseitems.ItemName
+                            select inventory;
+
+        itemsToUpdate.ToList().ForEach(async x =>
+        {
+            foreach (var item in cart)
+            {
+                if (x.ItemName == item.ItemName)
+                {
+                    log.LogInformation(1, ("Updating entry {itemName} with inventory change from {currentInventory}"), x.ItemName, x.Quantity);
+                    x.Quantity -= item.Quantity;
+                    log.LogInformation(1, (" to {updatedInventory}"), x.Quantity);
+
+                    await itemData.UpdateItem(x);
+                }
+            }
+
+        });
     }
 
 }

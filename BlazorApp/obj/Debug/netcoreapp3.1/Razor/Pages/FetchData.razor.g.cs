@@ -122,6 +122,13 @@ using SupportLibrary.Models.General;
 #line hidden
 #nullable disable
 #nullable restore
+#line 17 "C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\_Imports.razor"
+using Microsoft.Extensions.Logging;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
 #line 3 "C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\Pages\FetchData.razor"
 using BlazorApp.Data;
 

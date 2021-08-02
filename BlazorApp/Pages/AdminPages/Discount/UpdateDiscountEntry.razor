@@ -1,0 +1,67 @@
+﻿@inject IItemSQLData itemData
+
+<EditForm Model="coupon" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <label>Code</label>
+        <input type="text" @bind-value="coupon.CouponCode" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Percentage</label>
+        <InputNumber @bind-Value="coupon.PercentageDiscount" class="form-control"></InputNumber>
+    </div>
+    <div class="form-group">
+        <label>Upper Limit</label>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">$</span>
+            </div>
+            <InputNumber @bind-Value="coupon.UpperLimit" class="form-control"></InputNumber>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Remaining Uses (Set to -1 if this no number limit should be placed)</label>
+        <InputNumber @bind-Value="coupon.RemainingUses" class="form-control"></InputNumber>
+    </div>
+    <div class="form-group">
+        <label>Expiry Date</label>
+        <InputDate @bind-Value="coupon.ExpiryDate" class="form-control"></InputDate>
+    </div>
+    <div class="form-group">
+        <label>Minimum Purchase</label>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">$</span>
+            </div>
+            <InputNumber @bind-Value="coupon.MinimumPurchase" class="form-control"></InputNumber>
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Update</button>
+</EditForm>
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+
+    [Parameter]
+    public EventCallback<IDiscountCouponModel> OnUpdate { get; set; }
+
+    IDiscountCouponModel coupon = new DisplayCouponModel();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        coupon = await itemData.ReadDiscountCoupon(Id);
+        coupon.CouponValidRecalc();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        coupon.CouponValidRecalc();
+
+        await itemData.UpdateDiscountcode(coupon);
+        await OnUpdate.InvokeAsync(coupon);
+    }
+
+}

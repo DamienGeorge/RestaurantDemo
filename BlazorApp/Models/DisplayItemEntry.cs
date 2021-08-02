@@ -14,6 +14,12 @@ namespace BlazorApp.Models
         Food
     };
 
+    public enum RoleType
+    {
+        Administrator,
+        User
+    }
+
     public class DisplayItemEntry : IItemEntryModel
     {
 

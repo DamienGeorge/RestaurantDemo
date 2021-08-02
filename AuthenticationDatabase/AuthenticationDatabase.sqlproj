@@ -161,8 +161,22 @@
     <Build Include="dbo\StoredProcedures\spReadItems.sql" />
     <Build Include="dbo\StoredProcedures\spUpdateItem.sql" />
     <Build Include="dbo\StoredProcedures\spReadItem.sql" />
+    <Build Include="dbo\Tables\DiscountCodes.sql" />
+    <Build Include="dbo\StoredProcedures\spSaveDiscountCode.sql" />
+    <Build Include="dbo\StoredProcedures\spReadDiscountCoupons.sql" />
+    <Build Include="dbo\StoredProcedures\spUpdateDiscountCode.sql" />
+    <Build Include="dbo\StoredProcedures\spDeleteCouponCode.sql" />
+    <Build Include="dbo\StoredProcedures\spReadDiscountCouponById.sql" />
+    <Build Include="dbo\StoredProcedures\ReadAllOrders.sql" />
+    <Build Include="dbo\Tables\OrderEntries.sql" />
+    <Build Include="dbo\Tables\Orders.sql" />
+    <Build Include="dbo\StoredProcedures\spSaveOrder.sql" />
+    <Build Include="dbo\StoredProcedures\spSearch.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AuthenticationDatabase_1.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="AuthenticationDatabase.refactorlog" />
   </ItemGroup>
 </Project>

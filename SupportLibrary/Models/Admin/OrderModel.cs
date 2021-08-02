@@ -8,7 +8,7 @@ namespace SupportLibrary.Models.Admin
     public class OrderModel : IOrderModel
     {
         public const decimal TaxRate = 0.15M;
-        public int OrderId { get; set; }
+        public int Id { get; set; }
         public string CustomerName { get; set; }
         public decimal ItemTotal { get; set; }
         public decimal TaxTotal
@@ -31,5 +31,6 @@ namespace SupportLibrary.Models.Admin
         public DateTime OrderDate { get; set; }
 
         public List<ICartModel> CartData { get; set; }
+        public bool OrderCompleted { get; set; }
     }
 }

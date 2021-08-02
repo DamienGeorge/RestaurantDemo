@@ -121,6 +121,13 @@ using SupportLibrary.Models.General;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 17 "C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\_Imports.razor"
+using Microsoft.Extensions.Logging;
+
+#line default
+#line hidden
+#nullable disable
     public partial class App : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998

@@ -209,3 +209,15 @@ C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\
 C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\Razor\Pages\AdminPages\Inventory.razor.g.cs
 C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\AdminPages\UpdateEntry.razor.g.cs
 C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\Razor\Pages\AdminPages\UpdateEntry.razor.g.cs
+C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\AdminPages\Discount\AddDiscountEntry.razor.g.cs
+C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\AdminPages\Discount\DiscountCoupons.razor.g.cs
+C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\Razor\Pages\AdminPages\Discount\AddDiscountEntry.razor.g.cs
+C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\Razor\Pages\AdminPages\Discount\DiscountCoupons.razor.g.cs
+C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\AdminPages\Discount\UpdateDiscountEntry.razor.g.cs
+C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\Razor\Pages\AdminPages\Discount\UpdateDiscountEntry.razor.g.cs
+C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\User Pages\DiscountCoupon.razor.g.cs
+C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\Razor\Pages\User Pages\DiscountCoupon.razor.g.cs
+C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\AdminPages\Sales\TotalOrders.razor.g.cs
+C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\Razor\Pages\AdminPages\Sales\TotalOrders.razor.g.cs
+C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\AdminPages\Sales\CurrentOrders.razor.g.cs
+C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\obj\Debug\netcoreapp3.1\Razor\Pages\AdminPages\Sales\CurrentOrders.razor.g.cs

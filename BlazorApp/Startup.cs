@@ -51,6 +51,7 @@ namespace BlazorApp
             services.AddScoped<IOrderModel,OrderModel>();
             services.AddScoped<IItemEntryModel, ItemEntryModel>();
             services.AddScoped<IItemSQLData, ItemSQLData>();
+            services.AddScoped<IDiscountCouponModel, DiscountCouponModel>();
 
         }
 

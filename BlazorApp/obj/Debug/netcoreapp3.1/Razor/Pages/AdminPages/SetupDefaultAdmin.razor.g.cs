@@ -121,6 +121,13 @@ using SupportLibrary.Models.General;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 17 "C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\_Imports.razor"
+using Microsoft.Extensions.Logging;
+
+#line default
+#line hidden
+#nullable disable
     [Microsoft.AspNetCore.Components.RouteAttribute("/admin/setup")]
     public partial class SetupDefaultAdmin : Microsoft.AspNetCore.Components.ComponentBase
     {

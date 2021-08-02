@@ -1,88 +1,104 @@
 ﻿@inject IItemSQLData itemData
-<p class="text-success">@message</p>
+@inject AuthenticationStateProvider authenticator
 
-<EditForm Model="order" OnValidSubmit="HandleOrderPlaced">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <div class="row">
-        <div class="form-group col-md-5 ">
-            <label>Customer Name</label>
-            <InputText @bind-Value="order.CustomerName" class="form-control"></InputText>
-        </div>
-    </div>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="w-25">
-                <label>Order Date</label>
-            </div>
-            <div class="w-75">
-                <span class="text-info">@order.OrderDate</span>
-            </div>
-            <div class="w-100"></div>
-            <div class="w-25">
-                <label>Order Total</label>
-            </div>
-            <div class="w-75">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">$</span>
-                    </div>
-                    <input readonly type="number" class="input-group-text" value="@order.ItemTotal" />
-                </div>
-            </div>
-            <div class="w-100"></div>
-            <div class="w-25">
-                <label>Order Tax</label>
-            </div>
-            <div class="w-75">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">$</span>
-                    </div>
-                    <input readonly type="number" class="input-group-text" value="@(order.ItemTotal*0.15M)" />
-                </div>
-            </div>
 
-            <div class="w-100"></div>
-            @if (order.DiscountPercentage > 0)
-            {
+<p class="@cssText">@message</p>
+
+<DiscountCoupon CouponFound="OnCouponFound"></DiscountCoupon>
+<br />
+
+
+<div>
+    <EditForm Model="order" OnValidSubmit="HandleOrderPlaced">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="container-fluid">
+            <div class="row">
                 <div class="w-25">
-                    <label>Discount</label>
+                    <label>Customer Name</label>
+                </div>
+                <div class="w-75">
+                    <InputText @bind-Value="order.CustomerName" class="form-control"></InputText>
+                </div>
+            </div>
+            <div class="w-100"></div>
+
+            <div class="row">
+                <div class="w-25">
+                    <label>Order Date</label>
+                </div>
+                <div class="w-75">
+                    <span class="text-info">@order.OrderDate</span>
+                </div>
+                <div class="w-100"></div>
+                <div class="w-25">
+                    <label>Order Total</label>
                 </div>
                 <div class="w-75">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text">$</span>
                         </div>
-                        <input readonly type="number" class="input-group-text" value="@order.DiscountPercentage" />
+                        <input readonly type="number" class="input-group-text" value="@order.ItemTotal" />
                     </div>
                 </div>
                 <div class="w-100"></div>
-            }
-
-            <div class="w-25">
-                <label>Total Payable</label>
-            </div>
-            <div class="w-75">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">$</span>
+                <div class="w-25">
+                    <label>Order Tax</label>
+                </div>
+                <div class="w-75">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">$</span>
+                        </div>
+                        <input readonly type="number" class="input-group-text" value="@(order.TaxTotal)" />
                     </div>
-                    <input readonly type="number" class="input-group-text" value="@order.TotalCost" />
+                </div>
+
+                <div class="w-100"></div>
+                @if (order.DiscountPercentage > 0)
+                {
+                    <div class="w-25">
+                        <label>Discount</label>
+                    </div>
+                    <div class="w-75">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">%</span>
+                            </div>
+                            <input readonly type="number" class="input-group-text" value="-@order.DiscountPercentage" />
+                            @*<div class="input-group-append">
+                                    <span class="input-group-text">%</span>
+                                </div>*@
+                        </div>
+                    </div>
+                    <div class="w-100"></div>
+                }
+
+                <div class="w-25">
+                    <label>Total Payable</label>
+                </div>
+                <div class="w-75">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">$</span>
+                        </div>
+                        <input readonly type="number" class="input-group-text" value="@order.TotalCost" />
+                    </div>
                 </div>
             </div>
+            <button class="btn btn-outline-success float-right mx-2 my-2" type="submit">Place Order</button>
         </div>
-        <button class="btn btn-outline-success float-right mx-2 my-2" type="submit">Place Order</button>
-    </div>
-</EditForm>
-
-
-
+    </EditForm>
+</div>
 
 
 @code{
 
     string message = "";
+    bool cssString = true;
+    string cssText => cssString ? "text-success" : "text-danger";
 
     [Parameter]
     public EventCallback OrderPlaced { get; set; }
@@ -102,11 +118,8 @@
             total += x.Total;
         });
 
+        order.CustomerName = authenticator.GetAuthenticationStateAsync().Result.User.Identity.Name;
         order.ItemTotal = total;
-
-        order.DiscountPercentage = 0.05M;
-
-        //order.TotalCost = total + (total * .15M);
     }
 
     private async Task HandleOrderPlaced()
@@ -116,6 +129,41 @@
         message = "Thank you! Your order has been placed! Please give us a few moments to get your food ready";
 
         order = new DisplayOrderModel();
+
+        await OrderPlaced.InvokeAsync(new { });
+    }
+
+    private void OnCouponFound(IDiscountCouponModel coupon)
+    {
+        if (coupon != null)
+        {
+            if (coupon.Valid)
+            {
+                if (order.ItemTotal >= coupon.MinimumPurchase)
+                {
+                    order.DiscountPercentage = coupon.PercentageDiscount;
+                    message = $"Success! You've got {coupon.PercentageDiscount}% off your order!";
+                    cssString = true;
+                }
+                else
+                {
+                    message = $"Minimum purchase not reached! Please add items worth {coupon.MinimumPurchase - order.ItemTotal} to cart to use coupon";
+                    cssString = false;
+                }
+            }
+
+            else
+            {
+                message = "This code has either expired or is not valid";
+                cssString = false;
+            }
+        }
+        else
+        {
+            order.DiscountPercentage = 0;
+            message = "Coupon code is invalid";
+            cssString = false;
+        }
     }
 
 }

@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="ba24f49c-7360-4402-ab89-d88bdd46d6f8" ChangeDateTime="07/07/2021 17:15:17">
+    <Property Name="ElementName" Value="[dbo].[DiscountCodes].[Code]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[DiscountCodes]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="DiscountCode" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="8abab2f3-ff7b-4481-a2ba-20c218533fbd" ChangeDateTime="07/07/2021 17:15:28">
+    <Property Name="ElementName" Value="[dbo].[DiscountCodes].[DiscountPercentage]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[DiscountCodes]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PercentageDiscount" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="fa08baac-d6ee-4e5c-9bd7-9ed0a475ab69" ChangeDateTime="07/07/2021 17:18:53">
+    <Property Name="ElementName" Value="[dbo].[DiscountCodes].[DiscountCode]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[DiscountCodes]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CouponCode" />
+  </Operation>
+</Operations>

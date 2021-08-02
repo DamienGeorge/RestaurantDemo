@@ -6,7 +6,7 @@ namespace SupportLibrary.Models.Admin
 {
     public interface IOrderModel
     {
-        int OrderId { get; set; }
+        int Id { get; set; }
         string CustomerName { get; set; }
         DateTime OrderDate { get; set; }
         decimal ItemTotal { get; set; }
@@ -14,5 +14,6 @@ namespace SupportLibrary.Models.Admin
         decimal DiscountPercentage { get; set; }
         decimal TotalCost { get;}
         List<ICartModel> CartData { get; set; }
+        bool OrderCompleted { get; set; }
     }
 }

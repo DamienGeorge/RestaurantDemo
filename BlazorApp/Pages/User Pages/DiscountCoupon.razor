@@ -1,0 +1,55 @@
+﻿@inject IItemSQLData itemData
+@*<div class="w-25">
+        <label>Discount Coupon</label>
+    </div>
+    <div class="input-group w-75" onsubmit="HandleSubmit">
+        <input @bind-value="coupon" type="text" min="5" maxlength="20" />
+        <button class="btn btn-outline-primary">Discount Me!</button>
+    </div>*@
+
+<EditForm Model="coupon" OnValidSubmit="HandleSubmit">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="w-25">
+                <label>Discount Coupon</label>
+            </div>
+            <div class="input-group w-75">
+                <input @bind-value="coupon" type="text" min="5" maxlength="20" />
+                <button class="btn btn-outline-primary" type="submit">Discount Me!</button>
+            </div>
+        </div>
+        <div class="w-100"></div>
+    </div>
+</EditForm>
+
+@code {
+
+    [Parameter]
+    public EventCallback<IDiscountCouponModel> CouponFound { get; set; }
+
+    List<IDiscountCouponModel> coupons = new List<IDiscountCouponModel>();
+
+    string coupon = "";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        coupons = await itemData.ReadDiscountCoupons();
+
+        coupons.ForEach(x =>
+        {
+            x.CouponValidRecalc();
+            itemData.UpdateDiscountcode(x);
+        });
+    }
+
+    private async Task HandleSubmit()
+    {
+
+        var row = coupons.Where(x => x.CouponCode.ToLower() == coupon.ToLower()).FirstOrDefault();
+
+        coupon = String.Empty;
+
+        await CouponFound.InvokeAsync(row);
+    }
+
+}

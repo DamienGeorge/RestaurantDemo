@@ -6,3 +6,4 @@ C:\Users\Dan.G\source\repos\RestaurantDemoApp\SupportLibrary\obj\Debug\netstanda
 C:\Users\Dan.G\source\repos\RestaurantDemoApp\SupportLibrary\obj\Debug\netstandard2.0\SupportLibrary.csproj.CoreCompileInputs.cache
 C:\Users\Dan.G\source\repos\RestaurantDemoApp\SupportLibrary\obj\Debug\netstandard2.0\SupportLibrary.dll
 C:\Users\Dan.G\source\repos\RestaurantDemoApp\SupportLibrary\obj\Debug\netstandard2.0\SupportLibrary.pdb
+C:\Users\Dan.G\source\repos\RestaurantDemoApp\SupportLibrary\obj\Debug\netstandard2.0\SupportLibrary.csprojAssemblyReference.cache

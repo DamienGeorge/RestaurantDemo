@@ -124,6 +124,13 @@ using SupportLibrary.Models.General;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 17 "C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\_Imports.razor"
+using Microsoft.Extensions.Logging;
+
+#line default
+#line hidden
+#nullable disable
     public partial class NavMenu : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
@@ -132,7 +139,7 @@ using SupportLibrary.Models.General;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 53 "C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\Shared\NavMenu.razor"
+#line 68 "C:\Users\Dan.G\source\repos\RestaurantDemoApp\BlazorApp\Shared\NavMenu.razor"
        
     private bool collapseNavMenu = true;
 

@@ -11,7 +11,7 @@
             </div>
             <div>
                 @*<InputText class="form-control"  @bind-Value="search.SearchTerm"></InputText>*@
-                <input @bind-value="search.SearchTerm" @bind-value:event="oninput" placeholder="Enter Text to Search..." />
+                <input class="form-control" @bind-value="search.SearchTerm" @bind-value:event="oninput" placeholder="Enter Text to Search..." />
             </div>
             <div class="input-group-append">
                 <button class="btn input-group-text" type="submit">Go</button>
