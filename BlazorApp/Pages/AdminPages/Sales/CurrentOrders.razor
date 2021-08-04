@@ -45,7 +45,9 @@
 
     protected override async Task OnParametersSetAsync()
     {
+        log.LogDebug("Fetching all the order to complete from Database");
         ordersToComplete = await itemData.ReadPendingOrders();
+        log.LogDebug("Retrieved {orderToCompleteCount} pending Orders", ordersToComplete.Count);
     }
 
     private async void CompleteOrder(IOrderModel order)

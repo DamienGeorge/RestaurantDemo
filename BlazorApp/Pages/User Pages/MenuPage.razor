@@ -4,7 +4,10 @@
 @using Microsoft.Extensions.Logging
 @inject ILogger<MenuPage> log
 
-<div class="alert alert-danger">@message</div> 
+@if (String.IsNullOrEmpty(message) == false)
+{
+    <div class="alert alert-danger">@message</div>
+}
 
 @if (items.Count > 0)
 {
@@ -129,6 +132,8 @@ else
     bool showOrderSummary = false;
     bool returnToMenuTrigger = false;
 
+    Action RefreshRequested;
+
     List<DisplayCartModel> cart = new List<DisplayCartModel>();
 
     string message = "";
@@ -155,8 +160,16 @@ else
         {
             if (entry.Quantity == item.Quantity)
             {
+                log.LogInformation("Item is out of stock, throwing Alert message");
 
-                message = $"Sorry, but this item is no longer available";
+                message = "Sorry, but this item is no longer available";
+
+                log.LogInformation("Starting timer at {time}",DateTime.Now);
+
+                var timer = new System.Timers.Timer(5000);
+                timer.Enabled = true;
+                timer.AutoReset = false;
+                timer.Elapsed += new System.Timers.ElapsedEventHandler(OnTimeElapsed);
             }
             else
             {
@@ -174,6 +187,13 @@ else
             cart.Add(p);
         }
 
+    }
+
+    private void OnTimeElapsed(object source, EventArgs e)
+    {
+        log.LogInformation("Reseting the message to empty at {time}",DateTime.Now);
+        message = "";
+        log.LogInformation("Exiting the thread");
     }
 
     private void RemoveFromCart(IItemEntryModel item)
