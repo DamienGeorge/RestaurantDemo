@@ -121,6 +121,9 @@
     <Folder Include="dbo\" />
     <Folder Include="dbo\Tables\" />
     <Folder Include="dbo\StoredProcedures" />
+    <Folder Include="dbo\StoredProcedures\DiscountCoupon" />
+    <Folder Include="dbo\StoredProcedures\Orders" />
+    <Folder Include="dbo\StoredProcedures\Items" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\__EFMigrationsHistory.sql">
@@ -156,22 +159,24 @@
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
     <Build Include="dbo\StoredProcedures\spFetchUsers.sql" />
-    <Build Include="dbo\StoredProcedures\spAddItem.sql" />
     <Build Include="dbo\Tables\Items.sql" />
-    <Build Include="dbo\StoredProcedures\spReadItems.sql" />
-    <Build Include="dbo\StoredProcedures\spUpdateItem.sql" />
-    <Build Include="dbo\StoredProcedures\spReadItem.sql" />
     <Build Include="dbo\Tables\DiscountCodes.sql" />
-    <Build Include="dbo\StoredProcedures\spSaveDiscountCode.sql" />
-    <Build Include="dbo\StoredProcedures\spReadDiscountCoupons.sql" />
-    <Build Include="dbo\StoredProcedures\spUpdateDiscountCode.sql" />
-    <Build Include="dbo\StoredProcedures\spDeleteCouponCode.sql" />
-    <Build Include="dbo\StoredProcedures\spReadDiscountCouponById.sql" />
-    <Build Include="dbo\StoredProcedures\ReadAllOrders.sql" />
     <Build Include="dbo\Tables\OrderEntries.sql" />
     <Build Include="dbo\Tables\Orders.sql" />
-    <Build Include="dbo\StoredProcedures\spSaveOrder.sql" />
-    <Build Include="dbo\StoredProcedures\spSearch.sql" />
+    <Build Include="dbo\StoredProcedures\DiscountCoupon\spDeleteCouponCode.sql" />
+    <Build Include="dbo\StoredProcedures\DiscountCoupon\spReadDiscountCouponById.sql" />
+    <Build Include="dbo\StoredProcedures\DiscountCoupon\spReadDiscountCoupons.sql" />
+    <Build Include="dbo\StoredProcedures\DiscountCoupon\spSaveDiscountCode.sql" />
+    <Build Include="dbo\StoredProcedures\DiscountCoupon\spUpdateDiscountCode.sql" />
+    <Build Include="dbo\StoredProcedures\Orders\ReadAllOrders.sql" />
+    <Build Include="dbo\StoredProcedures\Orders\spReadPendingOrders.sql" />
+    <Build Include="dbo\StoredProcedures\Orders\spSaveOrder.sql" />
+    <Build Include="dbo\StoredProcedures\Orders\spUpdateOrderAsCompleted.sql" />
+    <Build Include="dbo\StoredProcedures\Items\spAddItem.sql" />
+    <Build Include="dbo\StoredProcedures\Items\spReadItem.sql" />
+    <Build Include="dbo\StoredProcedures\Items\spReadItems.sql" />
+    <Build Include="dbo\StoredProcedures\Items\spSearch.sql" />
+    <Build Include="dbo\StoredProcedures\Items\spUpdateItem.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AuthenticationDatabase_1.publish.xml" />
